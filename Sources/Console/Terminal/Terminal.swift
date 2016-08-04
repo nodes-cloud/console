@@ -135,7 +135,6 @@ public class Terminal: ConsoleProtocol {
         let tput = "/usr/bin/tput"
 
         do {
-            // FIXME: tput doesn't work with NSTask
             let cols = try subexecute("\(tput) cols").trim()
             let lines = try subexecute("\(tput) lines").trim()
 
