@@ -3,7 +3,8 @@ import PackageDescription
 let package = Package(
     name: "Console",
     targets: [
-        Target(name: "Console"),
+        Target(name: "Console", dependencies: ["POSIX"]),
+        Target(name: "POSIX"),
         Target(name: "ConsoleExample", dependencies: ["Console"])
     ],
     dependencies: [

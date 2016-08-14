@@ -42,4 +42,13 @@ class TerminalTests: XCTestCase {
         XCTAssertEqual(t.size.height, 24)
     }
 
+    func testPopen() {
+        if let res = try? popen(["ls", "-l"]) {
+            print("res: \(res)")
+            XCTAssertEqual(res, "foo")
+        } else {
+            XCTFail()
+        }
+    }
+
 }
