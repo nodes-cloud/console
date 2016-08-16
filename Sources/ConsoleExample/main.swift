@@ -89,7 +89,7 @@ let cmd = ["/usr/local/bin/docker", "run", "-it", "--entrypoint",
 console.info("Running: " + cmd.joined(separator: " "))
 console.info("CTRL-D to exit")
 do {
-    try popen2(cmd)
+    try system(cmd)
 } catch {
     print("failed")
 }
