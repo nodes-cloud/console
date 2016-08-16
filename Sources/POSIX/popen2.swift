@@ -1,6 +1,6 @@
 import libc
 
-public func popen2(_ arguments: [String], redirectStandardError: Bool = false, environment: [String: String] = [:]) throws
+public func popen2(_ arguments: [String], environment: [String: String] = [:]) throws
 {
     do {
         // Create the file actions to use for spawning.
@@ -11,6 +11,7 @@ public func popen2(_ arguments: [String], redirectStandardError: Bool = false, e
         #endif
         posix_spawn_file_actions_init(&fileActions)
 
+        // inherit the file descriptors (stdin, stdout, stderr) from the calling process
         posix_spawn_file_actions_addinherit_np(&fileActions, 0)
         posix_spawn_file_actions_addinherit_np(&fileActions, 1)
         posix_spawn_file_actions_addinherit_np(&fileActions, 2)
