@@ -1,5 +1,6 @@
 import Console
 import Foundation
+import POSIX
 
 let console: ConsoleProtocol = Terminal(arguments: Process.arguments)
 
@@ -81,6 +82,17 @@ console.print("Thanks for watching, \(name)!")
 console.wait(seconds: 1.5)
 console.clear(.line)
 
+
+let cmd = ["/usr/local/bin/docker", "run", "-it", "--entrypoint",
+           "bash", "qutheory/swift:DEVELOPMENT-SNAPSHOT-2016-07-25-a"]
+//let cmd = ["/usr/bin/python"]
+console.info("Running: " + cmd.joined(separator: " "))
+console.info("CTRL-D to exit")
+do {
+    try popen2(cmd)
+} catch {
+    print("failed")
+}
 
 console.info("Goodbye! 👋")
 console.print()
