@@ -1,13 +1,13 @@
 extension ConsoleProtocol {
     /**
         Runs a group of commands.
-     
-        The first argument should be the name of the 
+
+        The first argument should be the name of the
         currently executing program.
-     
+
         The second argument should be the id of the command
         that should run. Identifiers can recurse through groups.
-     
+
         Following arguments and options will be passed through
         to the commands.
     */
@@ -20,11 +20,14 @@ extension ConsoleProtocol {
         var commands = group.commands
         var executable = group.id
         var foundCommand: Command? = nil
+        var options = group.options
 
         while foundCommand == nil {
             guard let id = iterator.next() else {
                 // no command and no more values
-                printUsage(executable: executable, commands: commands)
+
+
+                printUsage(executable: executable, commands: commands, group: group)
                 if isHelp {
                     // group help was requested
                     printHelp(executable: executable, group: group)
@@ -37,7 +40,9 @@ extension ConsoleProtocol {
 
             guard let runnable = commands.filter({ $0.id == id }).first else {
                 // value doesn't match any runnable items
-                printUsage(executable: executable, commands: commands)
+                //printUsage(executable: executable, commands: commands, group: group)
+
+                print("\(executable): '\(id)' was not a recognized command.\nSee '\(executable) --help'.")
                 throw ConsoleError.commandNotFound(id)
             }
 
@@ -84,11 +89,14 @@ extension ConsoleProtocol {
         Runs an array of commands by creating a group
         then calling run(group: Group).
     */
-    public func run(executable: String, commands: [Runnable], arguments: [String], help: [String]) throws {
+    public func run(executable: String, commands: [Runnable], arguments: [String], help: [String], description: String, options: [String: Any]) throws {
         let group = Group(
             id: executable,
             commands: commands,
-            help: help
+            help: help,
+            signature: executable,
+            description: description,
+            options: options
         )
 
         try run(group, arguments: arguments)
