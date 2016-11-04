@@ -1,14 +1,21 @@
 extension ConsoleProtocol {
-    public func printUsage(executable: String, commands: [Runnable]) {
-        info("Usage: ", newLine: false)
-        print("\(executable)", newLine: false)
+    public func printUsage(executable: String, commands: [Runnable], group: Group) {
+        print("Usage: ", newLine: false)
+        print("\(executable) COMMAND\n")
+
+        printDescription(group: group)
 
         if commands.count > 0 {
-            print(" <", newLine: false)
+			print("\nCommands: ")
             print(commands.map { command in
-                return command.id
-                }.joined(separator: "|"), newLine: false)
-            print(">")
+                var line = "   "
+				line += command.id
+				line += "\t"
+				line += command.signature
+				line += "\n"
+
+				return line
+                }.joined())
         } else {
             print()
         }
@@ -16,6 +23,10 @@ extension ConsoleProtocol {
 
     public func printHelp(executable: String, group: Group) {
         printHelp(group.help)
+    }
+
+    public func printDescription(group: Group) {
+        print(group.description)
     }
 
     public func printHelp(executable: String, command: Command) {
